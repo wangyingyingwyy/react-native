@@ -21,20 +21,13 @@ export default class Register extends Component {
         this.setState({pwd:text})
     }
     register=()=>{
-      console.log(this.state.username)
-      if(this.state.username==='' ){
-        Alert.alert('用户名不能为空')
-      }if(this.state.pwd===''){
-        Alert.alert('密码不能为空')
-      }else{
-        this.setState({isregister:true}) 
-        myFetch.post('/register',{
-            username:this.state.username,
-            pwd:this.state.pwd
-        }).then(res=>{
-            Actions.login();
-       })
-      }
+      this.setState({isregister:true}) 
+      myFetch.post('/register',{
+          username:this.state.username,
+          pwd:this.state.pwd
+      }).then(res=>{
+          Actions.login();
+      })
        
     }
   render() {

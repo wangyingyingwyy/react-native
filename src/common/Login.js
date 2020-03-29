@@ -98,13 +98,7 @@ export default class Login extends Component {
         </View>
         {
             this.state.isloading
-            ?ToastAndroid.showWithGravityAndOffset(
-              "正在登陆中",
-              ToastAndroid.LONG,
-              ToastAndroid.TOP,
-              25,
-              50
-            )
+            ?<View><ActivityIndicator size='large' color='red'/><Text style={{marginLeft:280*s}}>正在登陆...</Text></View>
             :null
         }
       </View>
