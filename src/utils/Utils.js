@@ -6,8 +6,7 @@ let myFetch={
         if(queryParams){
             url=rootUrl+url+"?"+querString.stringify(queryParams);
         }
-        console.log(url)
-        return fetch(url)
+        return fetch(rootUrl+url)
                 .then(res=>res.json())
     },
     post(url,body){

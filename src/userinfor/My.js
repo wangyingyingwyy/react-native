@@ -136,8 +136,11 @@ export default class My extends Component {
         })
     }
     back=()=>{
-        AsyncStorage.clear();
-        Actions.login();
+        AsyncStorage.removeItem('user')
+        .then(res=>{
+            Actions.replace('login');
+        });
+        
     }
     render() {
         return (
@@ -164,12 +167,12 @@ export default class My extends Component {
                                 style={{width:40*s,height:40*s,marginLeft:20*s}}
                         />
                         <Text style={{marginLeft:20*s,
-                                    fontSize:15,
+                                    fontSize:13,
                                     color:'#4f4e4e'
                                 }}
                         >我的个人中心</Text>
                     </View>
-                    <View style={[styles.midbox,{height:450*s}]}>
+                    <View style={[styles.midbox,{height:400*s}]}>
                         <FlatList
                             data={list1}
                             numColumns={3}
@@ -179,7 +182,7 @@ export default class My extends Component {
                                             style={{width:40*s,height:40*s,marginBottom:10*s}}
                                     />
                                     <Text
-                                        style={{fontSize:15,
+                                        style={{fontSize:11,
                                             color:'#4f4e4e',
                                             fontFamily:'宋体',
                                             textAlign:'center'
@@ -195,12 +198,12 @@ export default class My extends Component {
                                 style={{width:40*s,height:40*s,marginLeft:20*s}}
                         />
                         <Text style={{marginLeft:20*s,
-                                    fontSize:15,
+                                    fontSize:13,
                                     color:'#4f4e4e'
                                 }}
                         >E族活动</Text>
                     </View>
-                    <View style={[styles.midbox,{height:350*s}]}>
+                    <View style={[styles.midbox,{height:300*s}]}>
                         <FlatList
                             data={list2}
                             numColumns={3}
@@ -213,7 +216,7 @@ export default class My extends Component {
                                                 style={{width:40*s,height:40*s,marginBottom:10*s}}
                                         />
                                         <Text
-                                        style={{fontSize:15,
+                                        style={{fontSize:11,
                                             color:'#4f4e4e',
                                             fontFamily:'宋体',
                                             textAlign:'center'
@@ -227,7 +230,7 @@ export default class My extends Component {
                                          style={{width:40*s,height:40*s,marginBottom:10*s}}
                                  />
                                  <Text
-                                     style={{fontSize:15,
+                                     style={{fontSize:11,
                                          color:'#4f4e4e',
                                          fontFamily:'宋体',
                                          textAlign:'center'

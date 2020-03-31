@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
-import { Text, View, StyleSheet,Dimensions, TouchableOpacity, ToastAndroid } from 'react-native'
+import { Text, View, StyleSheet,Dimensions, TouchableOpacity, ToastAndroid,ActivityIndicator } from 'react-native'
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { Actions } from 'react-native-router-flux';
 
-const {width}=Dimensions.get('window');
+const {width,height}=Dimensions.get('window');
 const s=width/640;
 
 export default class Release extends Component {
@@ -12,11 +12,15 @@ export default class Release extends Component {
         this.state={
            data:[],
            num:1,
+           isload:false
         }
     }
     componentDidMount(){
         var page=this.state.num;
         var data1=[];
+        this.setState({
+            isload:true
+        })
         fetch('https://cnodejs.org/api/v1/topics?limit=10&page='+page)
         .then((res)=>res.json())
         .then((res)=>{
@@ -29,6 +33,7 @@ export default class Release extends Component {
             this.setState({
                 data:data1,
                 num:this.state.num,
+                isload:false
             })
         })
     }
@@ -75,46 +80,40 @@ export default class Release extends Component {
         
     }
     render() {
-        return (
-         <>
-            <View style={styles.header}>
-                <Icon name='angle-left'
-                        style={[styles.back,{marginRight:100*s}]}
-                        onPress={()=>Actions.pop()}
-                />
-                <Text style={{fontSize:20,color:'#fff'}}
-                >我的发布</Text>
-                <Icon name='ellipsis-h'
-                        style={[styles.back,{marginLeft:100*s}]}
-                />
-            </View>
-            {/* 正文 */}
-            <View style={{backgroundColor:'#fff'}}>
-                {
-                    this.state.data.map((item)=>(
-                        <View style={{flexDirection:'row',height:50*s,justifyContent:'space-around',alignItems:'center'}}>
-                            <Text style={{width:350*s,fontSize:12}}>{item.title.length > 15 ? item.title.substr(0, 15) + "..." : item.title}</Text>
-                            <Text style={{width:200*s,fontSize:12}}>{item.create_at.slice(0,10)}</Text>
-                            {
-                                item.reply==='待回复'?<Text style={{width:60*s,color:'red',fontSize:12}}>{item.reply}</Text>:
-                                <Text style={{width:60*s,fontSize:12}}>{item.reply}</Text>
-                            }
-                        </View>
-                    ))
-                }
-                <View style={styles.btn}>
-                    <TouchableOpacity style={{
-                                    height:50*s,
-                                    width:150*s,
-                                    borderRadius:30*s,
-                                    backgroundColor:'red',
-                                    alignItems:'center',
-                                    justifyContent:'center'
-                                }}
-                                onPress={()=>this.previous()}
-                    ><Text style={{color:'#fff'}}>上一页</Text></TouchableOpacity>
-                    <Text style={{height:50*s,lineHeight:50*s}}>第{this.state.num}页</Text>
-                    <TouchableOpacity style={{
+        if(this.state.isload){
+            return (
+                <ActivityIndicator style={{position:'absolute',left:280*s,height:1000*s}} size='large' color='red'/>
+            )
+        }else{
+            return (
+            <>
+                <View style={styles.header}>
+                    <Icon name='angle-left'
+                            style={[styles.back,{marginRight:100*s}]}
+                            onPress={()=>Actions.pop()}
+                    />
+                    <Text style={{fontSize:18,color:'#fff'}}
+                    >我的发布</Text>
+                    <Icon name='ellipsis-h'
+                            style={[styles.back,{marginLeft:100*s}]}
+                    />
+                </View>
+                {/* 正文 */}
+                <View style={{backgroundColor:'#fff'}}>
+                    {
+                        this.state.data.map((item)=>(
+                            <View style={{flexDirection:'row',height:70*s,borderBottomWidth:1,borderBottomColor:'#999', justifyContent:'space-around',alignItems:'center'}}>
+                                <Text style={{width:340*s,fontSize:10}}>{item.title.length > 15 ? item.title.substr(0, 15) + "..." : item.title}</Text>
+                                <Text style={{fontSize:10}}>{item.create_at.slice(0,10)}</Text>
+                                {
+                                    item.reply==='待回复'?<Text style={{color:'red',fontSize:10}}>{item.reply}</Text>:
+                                    <Text style={{fontSize:10}}>{item.reply}</Text>
+                                }
+                            </View>
+                        ))
+                    }
+                    <View style={styles.btn}>
+                        <TouchableOpacity style={{
                                         height:50*s,
                                         width:150*s,
                                         borderRadius:30*s,
@@ -122,13 +121,25 @@ export default class Release extends Component {
                                         alignItems:'center',
                                         justifyContent:'center'
                                     }}
-                                    onPress={()=>this.next()}
-                    ><Text style={{color:'#fff'}}>下一页</Text></TouchableOpacity>
+                                    onPress={()=>this.previous()}
+                        ><Text style={{color:'#fff'}}>上一页</Text></TouchableOpacity>
+                        <Text style={{height:50*s,lineHeight:50*s}}>第{this.state.num}页</Text>
+                        <TouchableOpacity style={{
+                                            height:50*s,
+                                            width:150*s,
+                                            borderRadius:30*s,
+                                            backgroundColor:'red',
+                                            alignItems:'center',
+                                            justifyContent:'center'
+                                        }}
+                                        onPress={()=>this.next()}
+                        ><Text style={{color:'#fff'}}>下一页</Text></TouchableOpacity>
 
+                    </View>
                 </View>
-            </View>
-         </>
-        )
+            </>
+            )
+        }
     }
 }
 

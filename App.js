@@ -45,7 +45,7 @@ const App=() => {
        if(!user){
          SplashScreen.hide();
        }
-       if(user&&user.token){
+       if(user){
          setLogin(true);
          SplashScreen.hide();
        }
@@ -66,8 +66,8 @@ const App=() => {
     <>
       <Router
         backAndroidHandler={()=>{
+          console.log(Actions.currentScene);
           if(Actions.currentScene=='_home'){
-            console.log(12);
              if(new Date().getTime()-now<2000){
               BackHandler.exitApp();
             }else{
@@ -76,8 +76,7 @@ const App=() => {
               return true;
             }
           }
-          else if(Actions.currentScene=='login'){
-            console.log(23);
+          if(Actions.currentScene=='login'){
             if(new Date().getTime()-now<2000){
               BackHandler.exitApp();
             }else{

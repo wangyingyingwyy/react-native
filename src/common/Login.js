@@ -14,6 +14,13 @@ export default class Login extends Component {
             isloading:false
         }
     }
+    componentWillReceiveProps(){
+      this.setState({
+        username:'',
+        pwd:'',
+        isloading:false
+      })
+    }
     userhandle=(text)=>{
         this.setState({username:text})
     }
@@ -21,17 +28,22 @@ export default class Login extends Component {
         this.setState({pwd:text})
     }
     login=()=>{
-        this.setState({isloading:true})
-        myFetch.post('/login',{
+        if(this.state.username!='' && this.state.pwd!=''){
+          this.setState({isloading:true})
+          myFetch.post('/login',{
             username:this.state.username,
             pwd:this.state.pwd
-        }).then(res=>{
-            AsyncStorage.setItem('user',JSON.stringify(res.data))
-            .then(()=>{
-                this.setState({isloading:false})
-                Actions.home();
-        })
-       })
+          }).then(res=>{
+                AsyncStorage.setItem('user',JSON.stringify(res.data))
+                .then(()=>{
+                    this.setState({isloading:false})
+                    Actions.home();
+                })
+          })
+        }else{
+          ToastAndroid.show('用户名或密码不能为空',ToastAndroid.TOP)
+        }
+        
     }
   render() {
     return (
